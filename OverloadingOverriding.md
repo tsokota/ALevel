@@ -31,7 +31,7 @@
 Но названия параметров в сигнатуру НЕ входят. Например, возьмем следующий метод:
 
 
-  int Sum(int x, int y)
+```  int Sum(int x, int y)
   {
       return x + y;
   }
@@ -43,6 +43,7 @@
   {
       Console.WriteLine(x + y);
   }
+  ```
 ### Установка IIS
 
 ![Установка IIS](/Module-5/images/iis-setup.png)
