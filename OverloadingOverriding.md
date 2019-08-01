@@ -82,4 +82,25 @@
       Console.WriteLine(x + y);
   }
   ```
-
+Отличие методов по возвращаемому типу или по имени параметров не является основанием для перегрузки. Например, возьмем следующий набор методов:
+```php  
+  int Sum(int x, int y)
+  {
+      return x + y;
+  }
+  int Sum(int number1, int number2)
+  {
+      return x + y;
+  }
+  void Sum(int x, int y)
+  {
+      Console.WriteLine(x + y);
+  }
+  ```
+  
+  Сигнатура у всех этих методов будет совпадать:
+  
+  ```php  
+  Sum(int, int)
+  ```
+## Перегрузка операторов
