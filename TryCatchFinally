@@ -1,106 +1,150 @@
-# Обобщенные делегаты
+# Конструкция try..catch..finally
 
 ## Полезные ссылки
 
-[Делегаты Action, Predicate и Func](https://metanit.com/sharp/tutorial/3.33.php)
-[Generic Delegates](https://dotnettutorials.net/lesson/generic-delegates-csharp/)
+[Обработка исключений](https://metanit.com/sharp/tutorial/2.14.php)
+[Типы исключений. Класс Exception](https://metanit.com/sharp/tutorial/2.29.php)
+[Обработка ошибок в асинхронных методах](https://metanit.com/sharp/tutorial/13.4.php)
 
-
-В .NET есть несколько встроенных делегатов, которые используются в различных ситуациях. И наиболее используемыми, с которыми часто приходится сталкиваться, являются **Action, Predicate и Func**.
-
-## Action
-
-
-Делегат Action является обобщенным, принимает параметры и возвращает значение void:
-
+Иногда при выполнении программы возникают ошибки, которые трудно предусмотреть или предвидеть, а иногда и вовсе невозможно. Например, при передачи файла по сети может неожиданно оборваться сетевое подключение. такие ситуации называются исключениями. Язык C# предоставляет разработчикам возможности для обработки таких ситуаций. Для этого в C# предназначена конструкция **try...catch...finally**.
 ```csharp  
-public delegate void Action<T>(T obj)
-```
-
-Данный делегат имеет ряд перегруженных версий. Каждая версия принимает разное число параметров: от Action<in T1> до Action<in T1, in T2,....in T16>. Таким образом можно передать до 16 значений в метод.
-
-Как правило, этот делегат передается в качестве параметра метода и предусматривает вызов определенных действий в ответ на произошедшие действия. Например:
-
-```csharp  
-static void Main(string[] args) 
+try
 {
-    Action<int, int> op;
-    op = Add;
-    Operation(10, 6, op);
-    op = Substract;
-    Operation(10, 6, op);
- 
-    Console.Read();
+     
 }
- 
-static void Operation(int x1, int x2, Action<int, int> op)
+catch
 {
-    if (x1 > x2)
-        op(x1, x2);
+     
 }
- 
-static void Add(int x1, int x2)
+finally
 {
-    Console.WriteLine("Сумма чисел: " + (x1 + x2));
-}
- 
-static void Substract(int x1, int x2)
-{
-    Console.WriteLine("Разность чисел: " + (x1 - x2));
+     
 }
 ```
+При использовании блока **try...catch..finally** вначале выполняются все инструкции в блоке **try**. Если в этом блоке не возникло исключений, то после его выполнения начинает выполняться блок **finally**. И затем конструкция **try..catch..finally** завершает свою работу.
 
-## Predicate
-Делегат Predicate<T>, как правило, используется для сравнения, сопоставления некоторого объекта T определенному условию. В качестве выходного результата возвращается значение true, если условие соблюдено, и false, если не соблюдено:
-  
-  ```csharp  
-Predicate<int> isPositive = delegate (int x) { return x > 0; };
- 
-Console.WriteLine(isPositive(20));
-Console.WriteLine(isPositive(-20));
-  ```
-  
-  ## Func
-Еще одним распространенным делегатом является **Func**. Он возвращает результат действия и может принимать параметры. Он также имеет различные формы: от Func<out T>(), где T - тип возвращаемого значения, до Func<in T1, in T2,...in T16, out TResult>(), то есть может принимать до 16 параметров.
-  
-  ```csharp  
-TResult Func<out TResult>()
-TResult Func<in T, out TResult>(T arg)
-TResult Func<in T1, in T2, out TResult>(T1 arg1, T2 arg2)
-TResult Func<in T1, in T2, in T3, out TResult>(T1 arg1, T2 arg2, T3 arg3)
-TResult Func<in T1, in T2, in T3, in T4, out TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4)
-  ```
-  
-  Данный делегат также часто используется в качестве параметра в методах:
- 
- ```csharp  
-static void Main(string[] args) 
-{
-    Func<int, int> retFunc = Factorial;
-    int n1 = GetInt(6, retFunc);
-    Console.WriteLine(n1);  // 720
-     
-    int n2 = GetInt(6, x=> x *x);
-    Console.WriteLine(n2); // 36
-     
-    Console.Read();
-}
- 
-static int GetInt(int x1, Func<int, int> retF)
-{
-    int result = 0;
-    if (x1 > 0)
-        result = retF(x1);
-    return result;
-}
-static int Factorial(int x)
-{
-    int result = 1;
-    for (int i = 1; i <= x; i++)
-    {
-        result *= i;
+Если же в блоке **try** вдруг возникает исключение, то обычный порядок выполнения останавливается, и среда CLR начинает искать блок catch, который может обработать данное исключение. Если нужный блок catch найден, то он выполняется, и после его завершения выполняется блок **finally**.
+
+Если нужный блок **catch** не найден, то при возникновении исключения программа аварийно завершает свое выполнение.
+
+```csharp  
+  try
+        {
+            int x = 5;
+            int y = x / 0;
+            Console.WriteLine($"Результат: {y}");
+        }
+        catch
+        {
+            Console.WriteLine("Возникло исключение!");
+        }
+        finally
+        {
+            Console.WriteLine("Блок finally");
+        }
+        Console.WriteLine("Конец программы");
+        Console.Read();
     }
-    return result;
+```
+
+Следует отметить, что в этой конструкции обязателен блок try. При наличии блока catch мы можем опустить блок finally:
+```csharp  
+try
+{
+    int x = 5;
+    int y = x / 0;
+    Console.WriteLine($"Результат: {y}");
 }
-  ```
-  
+catch
+{
+    Console.WriteLine("Возникло исключение!");
+}
+```
+И, наоборот, при наличии блока finally мы можем опустить блок catch и не обрабатывать исключение:
+```csharp  
+try
+{
+    int x = 5;
+    int y = x / 0;
+    Console.WriteLine($"Результат: {y}");
+}
+finally
+{
+    Console.WriteLine("Блок finally");
+}
+```
+Однако, хотя с точки зрения синтаксиса C# такая конструкция вполне корректна, тем не менее, поскольку CLR не сможет найти нужный блок catch, то исключение не будет обработано, и программа аварийно завершится.
+## Типы исключений
+Базовым для всех типов исключений является тип Exception. Этот тип определяет ряд свойств, с помощью которых можно получить информацию об исключении.
+
+- **InnerException**: хранит информацию об исключении, которое послужило причиной текущего исключения
+
+- **Message**: хранит сообщение об исключении, текст ошибки
+
+- **Source**: хранит имя объекта или сборки, которое вызвало исключение
+
+- **StackTrace**: возвращает строковое представление стека вызывов, которые привели к возникновению исключения
+
+- **TargetSite**: возвращает метод, в котором и было вызвано исключение
+
+Например, обработаем исключения типа Exception:
+```csharp  
+static void Main(string[] args)
+{
+    try
+    {
+        int x = 5;
+        int y = x / 0;
+        Console.WriteLine($"Результат: {y}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Исключение: {ex.Message}");
+        Console.WriteLine($"Метод: {ex.TargetSite}");
+        Console.WriteLine($"Трассировка стека: {ex.StackTrace}");
+    }
+ 
+    Console.Read();
+}
+```
+  [Обработка ошибок в асинхронных методах](https://metanit.com/sharp/tutorial/pics/2.11.png)
+  Однако так как тип Exception является базовым типом для всех исключений, то выражение catch (Exception ex) будет обрабатывать все исключения, которые могут возникнуть.
+
+Но также есть более специализированные типы исключений, которые предназначены для обработки каких-то определенных видов исключений. Их довольно много, я приведу лишь некоторые:
+- **DivideByZeroException**: представляет исключение, которое генерируется при делении на ноль
+
+- **ArgumentOutOfRangeException**: генерируется, если значение аргумента находится вне диапазона допустимых значений
+
+- **ArgumentException**: генерируется, если в метод для параметра передается некорректное значение
+
+- **IndexOutOfRangeException**: генерируется, если индекс элемента массива или коллекции находится вне диапазона допустимых значений
+
+- **InvalidCastException**: генерируется при попытке произвести недопустимые преобразования типов
+
+- **NullReferenceException**: генерируется при попытке обращения к объекту, который равен null (то есть по сути неопределен)
+
+И при необходимости мы можем разграничить обработку различных типов исключений, включив дополнительные блоки catch:
+```csharp  
+static void Main(string[] args)
+{
+    try
+    {
+        int[] numbers = new int[4];
+        numbers[7] = 9;     // IndexOutOfRangeException
+ 
+        int x = 5;
+        int y = x / 0;  // DivideByZeroException
+        Console.WriteLine($"Результат: {y}");
+    }
+    catch (DivideByZeroException)
+    {
+        Console.WriteLine("Возникло исключение DivideByZeroException");
+    }
+    catch (IndexOutOfRangeException ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+             
+    Console.Read();
+}
+```
