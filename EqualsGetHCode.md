@@ -12,7 +12,8 @@ C#.NET предлагает множество способов сравнить
 
 **Итак, класс System.Object предлагает следующие методы**:
 
-- ```csharp  
+- 
+```csharp  
 public static bool ReferenceEquals(object objA, object objB)
 {
     return objA == objB;
@@ -20,21 +21,24 @@ public static bool ReferenceEquals(object objA, object objB)
 ```
 
 
-- ```csharp
+- 
+```csharp
 public static bool Equals(object objA, object objB)
 {
     return objA == objB || (objA != null && objB != null && objA.Equals(objB));
 }
 ```
 
-- ```csharp
+- 
+```csharp
 public virtual bool Equals(object obj)
 {
     return RuntimeHelpers.Equals(this, obj);
 }
 ```
 
-- ```csharp
+- 
+```csharp
 public static bool operator == (Foo left, Foo right);
 ```
 
