@@ -2,10 +2,10 @@
 
 ## Полезные ссылки
 
-[What is the difference between IQueryable<T> and IEnumerable<T>?](https://stackoverflow.com/questions/252785/what-is-the-difference-between-iqueryablet-and-ienumerablet)
-[Интерфейсы IEnumerable и IEnumerator](https://metanit.com/sharp/tutorial/4.11.php)
-[IEnumerable<T> и IQueryable<T>, в чем разница?](https://habr.com/ru/post/108407/)
-  
+[What is the difference between IQueryable<T> and IEnumerable<T>?](https://stackoverflow.com/questions/252785/what-is-the-difference-between-iqueryablet-and-ienumerablet)<br/>
+[Интерфейсы IEnumerable и IEnumerator](https://metanit.com/sharp/tutorial/4.11.php)<br/>
+[IEnumerable<T> и IQueryable<T>, в чем разница?](https://habr.com/ru/post/108407/)<br/>
+[IEnumerable и IQueryable в Entity Framework](https://metanit.com/sharp/entityframework/1.4.php)<br/>
 ## IEnumerable
 
 Как мы знаем, основной для большинства коллекций является реализация интерфейсов IEnumerable и IEnumerator. Благодаря такой реализации мы можем перебирать объекты в цикле foreach::
